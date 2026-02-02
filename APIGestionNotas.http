@@ -1,0 +1,6 @@
+@APIGestionNotas_HostAddress = http://localhost:5210
+
+GET {{APIGestionNotas_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
