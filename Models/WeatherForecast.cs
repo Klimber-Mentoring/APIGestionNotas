@@ -1,4 +1,4 @@
-namespace APIGestionNotas;
+namespace APIGestionNotas.Domain;
 
 public class WeatherForecast
 {

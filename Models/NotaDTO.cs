@@ -1,6 +1,6 @@
 ﻿namespace APIGestionNotas.Domain
 {
-    public class ListaDTO
+    public class NotaDTO
     {
         public int Id { get; set; }
         public string Titulo { get; set; }

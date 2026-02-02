@@ -3,7 +3,7 @@ using APIGestionNotas.Managers;
 var builder = WebApplication.CreateBuilder(args);
 
 // Agrego dependencias
-builder.Services.AddSingleton<IListaManager, ListaManager>();
+builder.Services.AddSingleton<INotaManager, NotaManager>();
 
 // Add services to the container.
 
@@ -12,7 +12,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//no corria https, asi que:
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(7041, o => o.UseHttps());
+});
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

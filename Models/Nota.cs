@@ -1,6 +1,6 @@
 ﻿namespace APIGestionNotas.Domain
 {
-    public class Lista
+    public class Nota
     {
         public int Id { get; set; }
         public string Titulo { get; set; }
@@ -8,7 +8,7 @@
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaModificacion { get; set; }
 
-        public Lista(int id, string titulo, string? contenido, DateTime fechaCreacion, DateTime fechaModificacion)
+        public Nota(int id, string titulo, string? contenido, DateTime fechaCreacion, DateTime fechaModificacion)
         {
             Id = id;
             Titulo = titulo;
