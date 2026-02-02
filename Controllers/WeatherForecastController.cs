@@ -1,3 +1,4 @@
+using APIGestionNotas.Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIGestionNotas.Controllers;

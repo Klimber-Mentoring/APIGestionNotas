@@ -1,4 +1,9 @@
+using APIGestionNotas.Managers;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Agrego dependencias
+builder.Services.AddSingleton<IListaManager, ListaManager>();
 
 // Add services to the container.
 

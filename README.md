@@ -5,7 +5,7 @@ Una nota contiene los siguientes campos:
 - Título
 - Contenido
 - Fecha de creación
-- Fecha de modificación.
+- Fecha de modificación
 
 Endpoints:
 - Obtener todas las notas [GetAll]
