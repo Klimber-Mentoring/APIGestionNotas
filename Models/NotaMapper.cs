@@ -5,18 +5,12 @@
 
         public static NotaDTO ToDTO(Nota nota)
         {
-            return new NotaDTO
-            {
-                Id = nota.Id,
-                Titulo = nota.Titulo,
-                Contenido= nota.Contenido,
-                FechaCreacion = nota.FechaCreacion,
-                FechaModificación = nota.FechaModificacion
-            };
-         }
+            return new NotaDTO(nota.Id, nota.Titulo, nota.Contenido, nota.FechaCreacion, nota.FechaModificacion);
+        }
+
         public static Nota ToEntity(NotaDTO notaDTO)
         {
-            return new Nota(notaDTO.Id, notaDTO.Titulo, notaDTO.Contenido, notaDTO.FechaCreacion, notaDTO.FechaModificación);            
+            return new Nota(notaDTO.Id, notaDTO.Titulo, notaDTO.Contenido, notaDTO.FechaCreacion, notaDTO.FechaModificacion);            
         }
 
     }

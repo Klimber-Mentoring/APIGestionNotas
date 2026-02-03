@@ -17,14 +17,11 @@ namespace APIGestionNotas.Managers
         {
             List<NotaDTO> notasDTO = new List<NotaDTO>();
 
-            if (Notas == null)
-                throw new Exception("No hay notas cargadas");
-
             foreach (Nota nota in Notas)
             {
-                    notasDTO.Add(NotaMapper.ToDTO(nota));
+                notasDTO.Add(NotaMapper.ToDTO(nota));
             }
-            return notasDTO;
+            return (notasDTO.OrderBy(x => x.FechaCreacion).ToList());
         }
 
         //  Obtener nota por id[GetById(int id)]
@@ -41,8 +38,10 @@ namespace APIGestionNotas.Managers
         //  Crear una nota[Create]
         private int IdGenerator()
         {
-            idCounter++;
-            return idCounter;
+            int lista = Notas.Count();
+            int idNuevo = (lista > 0) ? lista : idCounter++;
+
+            return idNuevo;
         }
         public NotaDTO Create(NotaDTO notaDTO)
         {
@@ -72,7 +71,7 @@ namespace APIGestionNotas.Managers
             }
 
             if (notaEncontrada == null)
-                throw new KeyNotFoundException("Nota no encontrada");
+                return null;
 
             notaEncontrada.Titulo = notaDTO.Titulo;
             notaEncontrada.Contenido = notaDTO.Contenido;
@@ -92,10 +91,6 @@ namespace APIGestionNotas.Managers
                 if (nota.Id == notaDTO.Id)
                     notaEncontrada = nota;
             }
-
-            if (notaEncontrada == null)
-                throw new KeyNotFoundException("Nota no encontrada");
-
             Notas.Remove(notaEncontrada);
         }
 

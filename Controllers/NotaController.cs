@@ -11,7 +11,6 @@ namespace APIGestionNotas.Controllers
     public class NotaController: ControllerBase
     {
         private readonly INotaManager _notaManager;
-
         public NotaController(INotaManager notaManager)
         {
             _notaManager = notaManager;
@@ -21,6 +20,7 @@ namespace APIGestionNotas.Controllers
         public ActionResult<List<NotaDTO>> GetAll()
         {
             return _notaManager.GetAll();
+
         }
 
 
