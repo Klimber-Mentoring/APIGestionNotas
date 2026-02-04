@@ -1,10 +1,21 @@
 using APIGestionNotas;
 using APIGestionNotas.Managers;
+using AutoMapper;
+using APIGestionNotas.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Agrego dependencias
+var configAutomapper = new AutoMapper.MapperConfiguration(cfg =>
+{
+    cfg.AddProfile(new AutoMapperProfileConfiguration());
+},null);
+
+var mapper = configAutomapper.CreateMapper();
+builder.Services.AddSingleton(mapper);
+
+
 builder.Services.AddSingleton<INotaManager, NotaManager>();
 builder.Services.AddSingleton<Inicializador>();
 
@@ -22,6 +33,10 @@ builder.WebHost.ConfigureKestrel(options =>
 });
 
 var app = builder.Build();
+
+
+
+
 
 
 using (var scope = app.Services.CreateScope())
@@ -45,3 +60,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+

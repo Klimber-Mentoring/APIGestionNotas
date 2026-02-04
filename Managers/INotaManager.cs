@@ -1,4 +1,4 @@
-﻿using APIGestionNotas.Domain;
+﻿using APIGestionNotas.Models;
 
 namespace APIGestionNotas.Managers
 {

@@ -1,13 +1,17 @@
-﻿using APIGestionNotas.Domain;
+﻿using APIGestionNotas.Models;
+using AutoMapper;
+
 
 namespace APIGestionNotas.Managers
 {
     public class NotaManager : INotaManager
     {
+        private readonly IMapper _mapper;
         public List<Nota> Notas { get; set; }
         private int idCounter = 0;
-        public NotaManager()
+        public NotaManager(IMapper mapper)
         {
+            _mapper = mapper;
             Notas = new List<Nota>();
         }
 
@@ -19,7 +23,7 @@ namespace APIGestionNotas.Managers
 
             foreach (Nota nota in Notas)
             {
-                notasDTO.Add(NotaMapper.ToDTO(nota));
+                notasDTO.Add(_mapper.Map<NotaDTO>(nota));
             }
             return (notasDTO.OrderBy(x => x.FechaCreacion).ToList());
         }
@@ -30,7 +34,7 @@ namespace APIGestionNotas.Managers
             foreach (Nota nota in Notas)
             {
                 if (nota.Id == id)
-                    return NotaMapper.ToDTO(nota);
+                    return _mapper.Map<NotaDTO>(nota);
             }
             return null;
         }
@@ -45,7 +49,7 @@ namespace APIGestionNotas.Managers
         }
         public NotaDTO Create(NotaDTO notaDTO)
         {
-            var notaEntidad = NotaMapper.ToEntity(notaDTO);
+            var notaEntidad = _mapper.Map<Nota>(notaDTO);
 
             notaEntidad.Id = IdGenerator();
             notaEntidad.FechaCreacion = DateTime.Now;
@@ -53,7 +57,7 @@ namespace APIGestionNotas.Managers
 
             Notas.Add(notaEntidad);
 
-            return NotaMapper.ToDTO(notaEntidad);
+            return _mapper.Map<NotaDTO>(notaEntidad);
 
         }
 
@@ -78,7 +82,7 @@ namespace APIGestionNotas.Managers
 
             notaEncontrada.FechaModificacion = DateTime.Now;
 
-            return NotaMapper.ToDTO(notaEncontrada);
+            return _mapper.Map<NotaDTO>(notaEncontrada);
 
         }
 

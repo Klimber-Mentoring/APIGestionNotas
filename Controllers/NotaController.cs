@@ -1,4 +1,4 @@
-﻿using APIGestionNotas.Domain;
+﻿using APIGestionNotas.Models;
 using APIGestionNotas.Managers;
 using Microsoft.AspNetCore.Mvc;
 
