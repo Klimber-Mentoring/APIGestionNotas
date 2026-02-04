@@ -70,17 +70,13 @@ namespace APIGestionNotas.Controllers
         /// <summary>
         /// Actualiza una nota existente.
         /// </summary>
-        /// <param name="id">Identificador de la nota a actualizar (debe coincidir con nota.Id)</param>
+        /// <param name="id">Identificador de la nota a actualizar</param>
         /// <param name="nota">Datos actualizados de la nota</param>
         /// <response code="204">La nota se actualizó correctamente</response>
-        /// <response code="400">El id no coincide con el id de la nota proporcionada</response>
         /// <response code="404">No se encontró la nota a actualizar</response>
         
-        /// TODO: se podría crear un notaUpdateDTO que incluya solo Título y Contenido para evitar la necesidad de que 
-        /// el id de la nota coincida con el DTO, o al menos que el id se pase directamente con el DTO.
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<NotaDTO> Update(Guid id, UpdateNotaDTO nota)
         {
