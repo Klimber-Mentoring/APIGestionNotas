@@ -62,9 +62,6 @@ namespace APIGestionNotas.Managers
         }
 
         //  Actualizar una nota[Update]
-
-        // Convendría crear un DTO por método? por ej. UpdateDTO solo con titulo y contenido
-        // TODO: Considerar agregar un parámetro en ToEntity llamado notaExistente que evite hacer new en caso de que la misma sea true
         public NotaDTO Update(NotaDTO notaDTO)
         {
             Nota notaEncontrada = null;
@@ -86,7 +83,7 @@ namespace APIGestionNotas.Managers
 
         }
 
-        //  Eliminar una nota[Delete]
+        //  Eliminar una nota[Delete]dot
         public void Delete(NotaDTO notaDTO)
         {
             Nota notaEncontrada = null;
