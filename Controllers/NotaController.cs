@@ -63,7 +63,7 @@ namespace APIGestionNotas.Controllers
         {
             var notaCreada = _notaManager.Create(nota);
 
-            return CreatedAtAction(nameof(Get), new { id = notaCreada.Id }, notaCreada);
+            return Created("", new { id = notaCreada.Id });
         }
 
 
