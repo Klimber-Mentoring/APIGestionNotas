@@ -39,7 +39,7 @@ namespace APIGestionNotas.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<NotaDTO> Get(int id)
+        public ActionResult<NotaDTO> Get(Guid id)
         {
             var notaDTO = _notaManager.GetById(id);
 
@@ -82,17 +82,13 @@ namespace APIGestionNotas.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Update(int id, NotaDTO nota)
+        public ActionResult<NotaDTO> Update(Guid id, UpdateNotaDTO nota)
         {
-            if (id != nota.Id)
-                return BadRequest();
-
             var existingnota = _notaManager.GetById(id);
             if (existingnota is null)
                 return NotFound();
 
-            _notaManager.Update(nota);
-            return NoContent();
+            return _notaManager.Update(id, nota);
         }
 
         /// <summary>
@@ -105,7 +101,7 @@ namespace APIGestionNotas.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(Guid id)
         {
             var nota = _notaManager.GetById(id);
 

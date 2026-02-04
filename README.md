@@ -10,7 +10,7 @@ Una nota contiene los siguientes campos:
 Endpoints:
 - Obtener todas las notas [GetAll]
 
-- Obtener nota por id [GetById(int id)]
+- Obtener nota por id [GetById(Guid id)]
 
 - Crear una nota [Create]
 

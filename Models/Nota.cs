@@ -2,15 +2,15 @@
 {
     public class Nota
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Titulo { get; set; }
         public string? Contenido { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaModificacion { get; set; }
 
-        public Nota(int id, string titulo, string? contenido, DateTime fechaCreacion, DateTime fechaModificacion)
+        public Nota(Guid id, string titulo, string? contenido, DateTime fechaCreacion, DateTime fechaModificacion)
         {
-            Id = id;
+            Id = Guid.NewGuid();
             Titulo = titulo;
             Contenido = contenido;
             FechaCreacion = fechaCreacion;

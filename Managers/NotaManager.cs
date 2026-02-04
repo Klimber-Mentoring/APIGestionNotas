@@ -8,7 +8,6 @@ namespace APIGestionNotas.Managers
     {
         private readonly IMapper _mapper;
         public List<Nota> Notas { get; set; }
-        private int idCounter = 0;
         public NotaManager(IMapper mapper)
         {
             _mapper = mapper;
@@ -28,8 +27,8 @@ namespace APIGestionNotas.Managers
             return (notasDTO.OrderBy(x => x.FechaCreacion).ToList());
         }
 
-        //  Obtener nota por id[GetById(int id)]
-        public NotaDTO GetById(int id)
+        //  Obtener nota por id[GetById(Guid id)]
+        public NotaDTO GetById(Guid id)
         {
             foreach (Nota nota in Notas)
             {
@@ -40,18 +39,11 @@ namespace APIGestionNotas.Managers
         }
 
         //  Crear una nota[Create]
-        private int IdGenerator()
-        {
-            int lista = Notas.Count();
-            int idNuevo = (lista > 0) ? lista : idCounter++;
-
-            return idNuevo;
-        }
+        
         public NotaDTO Create(NotaDTO notaDTO)
         {
             var notaEntidad = _mapper.Map<Nota>(notaDTO);
 
-            notaEntidad.Id = IdGenerator();
             notaEntidad.FechaCreacion = DateTime.Now;
             notaEntidad.FechaModificacion = notaEntidad.FechaCreacion;
 
@@ -62,20 +54,20 @@ namespace APIGestionNotas.Managers
         }
 
         //  Actualizar una nota[Update]
-        public NotaDTO Update(NotaDTO notaDTO)
+        public NotaDTO Update(Guid id, UpdateNotaDTO updateNotaDTO)
         {
             Nota notaEncontrada = null;
             foreach (Nota nota in Notas)
             {
-                if (nota.Id == notaDTO.Id)
+                if (nota.Id == id)
                     notaEncontrada = nota;
             }
 
             if (notaEncontrada == null)
                 return null;
 
-            notaEncontrada.Titulo = notaDTO.Titulo;
-            notaEncontrada.Contenido = notaDTO.Contenido;
+            notaEncontrada.Titulo = updateNotaDTO.Titulo;
+            notaEncontrada.Contenido = updateNotaDTO.Contenido;
 
             notaEncontrada.FechaModificacion = DateTime.Now;
 

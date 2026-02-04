@@ -8,6 +8,8 @@ namespace APIGestionNotas.Helpers
         public AutoMapperProfileConfiguration() 
         { 
             CreateMap<Nota, NotaDTO>().ReverseMap();
+            CreateMap<Nota, UpdateNotaDTO>().ReverseMap();
+
         }
 
     }
