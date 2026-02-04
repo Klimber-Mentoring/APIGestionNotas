@@ -7,10 +7,12 @@ using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Agrego dependencias
+ILoggerFactory loggerFactory = LoggerFactory.Create(builder => { });
+
 var configAutomapper = new AutoMapper.MapperConfiguration(cfg =>
 {
     cfg.AddProfile(new AutoMapperProfileConfiguration());
-},null);
+}, loggerFactory);
 
 var mapper = configAutomapper.CreateMapper();
 builder.Services.AddSingleton(mapper);
@@ -33,11 +35,6 @@ builder.WebHost.ConfigureKestrel(options =>
 });
 
 var app = builder.Build();
-
-
-
-
-
 
 using (var scope = app.Services.CreateScope())
 {

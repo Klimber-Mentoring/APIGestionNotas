@@ -1,4 +1,4 @@
-﻿namespace APIGestionNotas.Domain
+﻿namespace APIGestionNotas.Models
 {
     public class NotaDTO
     {
