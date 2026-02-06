@@ -9,6 +9,9 @@ namespace APIGestionNotas.Helpers
         { 
             CreateMap<Nota, NotaDTO>().ReverseMap();
             CreateMap<Nota, UpdateNotaDTO>().ReverseMap();
+            CreateMap<Usuario, UserDTO>().ReverseMap();
+            CreateMap<Usuario, UserCreateDTO>().ReverseMap();
+
 
         }
 

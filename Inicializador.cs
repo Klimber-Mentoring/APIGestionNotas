@@ -1,16 +1,19 @@
 ﻿using APIGestionNotas.Models;
 using APIGestionNotas.Managers;
 using APIGestionNotas;
+using APIGestionNotas.Enums;
 
 namespace APIGestionNotas
 {
     public class Inicializador
     {
         private readonly INotaManager _notaManager;
+        private readonly IUserManager _userManager;
 
-        public Inicializador(INotaManager notaManager)
+        public Inicializador(INotaManager notaManager, IUserManager userManager)
         {
             _notaManager = notaManager;
+            _userManager = userManager;
         }
 
         public void CargarDatosPrueba()
@@ -23,6 +26,10 @@ namespace APIGestionNotas
             _notaManager.Create(new NotaDTO(Guid.NewGuid(), "Recetas para navidad", "Vitel tone \n Ensalada de naranja y cebolla", new DateTime(2025, 12, 24), DateTime.Now));
             _notaManager.Create(new NotaDTO(Guid.NewGuid(), "Nombre de perros", "- Luli \n- Lola \n- Magui \n- Gastón \n- Chimi", new DateTime(2026, 1, 18), DateTime.Now));
             _notaManager.Create(new NotaDTO(Guid.NewGuid(), "Objetivos del mes", "Terminar el proyecto de la API, mejorar organización y practicar más C#", new DateTime(2026, 2, 3), DateTime.Now));
+
+            _userManager.Create(new UserCreateDTO("admin1", "passwordAdmin",TipoDeUsuario.ADMIN));
+            _userManager.Create(new UserCreateDTO("user1", "passwordUser", TipoDeUsuario.USUARIO));
+
         }
     }
 }

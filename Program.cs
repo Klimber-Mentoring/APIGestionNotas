@@ -1,7 +1,9 @@
 using APIGestionNotas;
+using APIGestionNotas.Auth;
 using APIGestionNotas.Helpers;
 using APIGestionNotas.Managers;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
@@ -24,6 +26,8 @@ builder.Services.AddSingleton(mapper);
 
 
 builder.Services.AddSingleton<INotaManager, NotaManager>();
+builder.Services.AddSingleton<IUserManager, UserManager>();
+
 builder.Services.AddSingleton<Inicializador>();
 
 // Add services to the container.
@@ -41,7 +45,37 @@ builder.Services.AddSwaggerGen(options =>
     // Include XML comments
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+
+    options.AddSecurityDefinition("basic", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "basic",
+        In = ParameterLocation.Header,
+        Description = "Basic Authorization header using the Bearer Scheme."
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+          new OpenApiSecurityScheme
+          {
+              Reference = new OpenApiReference
+              {
+                  Type = ReferenceType.SecurityScheme,
+                  Id = "basic"
+              }
+          },
+          new string[] {}
+        }
+    });
+
 });
+
+//Authentication
+builder.Services.AddAuthentication("NotaAuthentication")
+    .AddScheme<AuthenticationSchemeOptions, NotaAuthenticationHandler>("NotaAuthentication", null);
+
 
 //no corria https, asi que:
 builder.WebHost.ConfigureKestrel(options =>
@@ -67,6 +101,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

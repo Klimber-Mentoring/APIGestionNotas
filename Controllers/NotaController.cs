@@ -1,6 +1,11 @@
-﻿using APIGestionNotas.Models;
+﻿using APIGestionNotas.Enums;
 using APIGestionNotas.Managers;
+using APIGestionNotas.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace APIGestionNotas.Controllers
 {
@@ -11,9 +16,11 @@ namespace APIGestionNotas.Controllers
     public class NotaController: ControllerBase
     {
         private readonly INotaManager _notaManager;
-        public NotaController(INotaManager notaManager)
+        private readonly IUserManager _userManager;
+        public NotaController(INotaManager notaManager, IUserManager userManager)
         {
             _notaManager = notaManager;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -21,6 +28,8 @@ namespace APIGestionNotas.Controllers
         /// </summary>
         /// <returns></returns>
         /// <response code="200">Devuelve la lista de notas</response>
+
+        [Authorize(Roles = ("Admin, User"))]
         [HttpGet]
         public ActionResult<List<NotaDTO>> GetAll()
         {
@@ -56,7 +65,10 @@ namespace APIGestionNotas.Controllers
         /// <returns>La nota creada</returns>
         /// <response code="201">La nota fue creada exitosamente</response>
         /// <response code="400">Datos inválidos en la solicitud</response>
-        [HttpPost]
+        /// 
+        [Authorize(Roles = "Admin, User")]
+
+        [HttpPost("nota")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Create(NotaDTO nota)
@@ -66,7 +78,7 @@ namespace APIGestionNotas.Controllers
             return Created("", new { id = notaCreada.Id });
         }
 
-
+        
         /// <summary>
         /// Actualiza una nota existente.
         /// </summary>
@@ -74,7 +86,9 @@ namespace APIGestionNotas.Controllers
         /// <param name="nota">Datos actualizados de la nota</param>
         /// <response code="204">La nota se actualizó correctamente</response>
         /// <response code="404">No se encontró la nota a actualizar</response>
-        
+
+        [Authorize(Roles = "Admin")]
+
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -93,6 +107,7 @@ namespace APIGestionNotas.Controllers
         /// <param name="id">Identificador de la nota a eliminar</param>
         /// <response code="204">La nota se eliminó correctamente</response>
         /// <response code="404">No se encontró la nota a eliminar</response>
+        [Authorize(Roles = "Admin")]
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -108,6 +123,34 @@ namespace APIGestionNotas.Controllers
 
             return NoContent();
         }
+
+
+        /// <summary>
+        /// Devuelve user|pass encriptados de un usuario si este existe
+        /// </summary>
+        /// <param name="username">Username del usuario</param>
+        /// <param name="password">Contraseña del usuario</param>
+        /// <returns>user|pass encriptados</returns>
+        /// ///<response code="204">La operación se realizó con éxito</response>
+        /// ///<response code="404">No se encontró un usuario con esas credenciales</response>
+       
+        [AllowAnonymous]
+        [HttpPost("usuarioLogin")]
+        public IActionResult Login([FromForm] string username, [FromForm] string password)
+        {
+            var usuario = _userManager.ObtenerUsuario(username);
+
+            if ((usuario == null) || !_userManager.ValidarPassword(usuario, password))
+            {
+                return Unauthorized();
+            }
+
+            var patron = $"{username}:{password}";
+            var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(patron));
+
+            return Ok(new { authorization = $"Basic {base64}"});
+        }
+
 
     }
 }
